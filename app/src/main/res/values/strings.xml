@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">логин</string>
+    <string name="prompt_password">пароль</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="error_invalid_password">Пароль слишком короткий</string>
+    <string name="error_invalid_login">Логин слишком короткий</string>
+    <string name="error_incorrect_login_password">Неверный логин или пароль</string>
+    <string name="dialog_ok">OK</string>
+    <string name="error_field_required">Не заполнено поле</string>
+
+    <string name="status">Статус</string>
+    <string name="call_operators">Позвонить оператору</string>
+    <string name="to_go_to_work">Выйти на смену</string>
+    <string name="to_leave_work">Закончить смену</string>
+    <string name="name_for_order">Название</string>
+    <string name="first_and_last_name">ФИО клиента</string>
+    <string name="adress_of_client">Адрес клиента</string>
+    <string name="adress_of_appointment">Адрес назначения</string>
+    <string name="call_client_button">Позвонить клиенту</string>
+    <string name="at_client_button">У клиента</string>
+    <string name="complete_order_buttton">Завершить заказ</string>
+    <string name="title_activity_maps">Маршрут</string>
+    <string name="title_new_order">Новый заказ</string>
+</resources>
