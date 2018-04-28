@@ -1,4 +1,4 @@
-package com.netcracker.myapplication.BackgroungJob;
+package com.netcracker.myapplication.BackgroungJob.OrderJob;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,52 +10,52 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.netcracker.myapplication.Activity.OrderActivity;
 import com.netcracker.myapplication.Application.AppDriverAssist;
+import com.netcracker.myapplication.Entity.DriverEntity;
 import com.netcracker.myapplication.Entity.OrderEntityTO;
 import com.netcracker.myapplication.R;
-import com.netcracker.myapplication.Security.TokenService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.netcracker.myapplication.Application.AppDriverAssist.getApi;
-
-public class ScheduledService extends JobIntentService {
-    private static final int UNIQUE_JOB_ID = 1337;
+public class OrderService extends JobIntentService {
+    public static final int UNIQUE_JOB_ID = 1337;
+    public static final int INITIAL_DELAY = 5000; // 5 seconds
+    public static final int PERIOD = 60000; // 60 seconds
     private static Context ctxt;
+    private NotificationManager notificationManager;
 
         static void enqueueWork(Context context) {
-            System.out.println("");
             ctxt = context;
-            enqueueWork(context, ScheduledService.class, UNIQUE_JOB_ID,
-                new Intent(context, ScheduledService.class));
+            enqueueWork(context, OrderService.class, 0,
+                new Intent(context, OrderService.class));
     }
 
     @Override
     public void onHandleWork(@NonNull Intent i) {
 
-        System.out.println("onHandleWork");
+            long idDriver = Long.valueOf(AppDriverAssist.getApplicationPreferences().getString(DriverEntity.ID_DRIVER));
 
-            long idDriver = Long.valueOf(AppDriverAssist.getApplicationPreferences().getSharedPreferences().getString(TokenService.ID_DRIVER, ""));
-
-        getApi().getOrderByDriverId(idDriver).enqueue(new Callback<OrderEntityTO>() {
+        AppDriverAssist.getApi().getOrderByDriverId(idDriver).enqueue(new Callback<OrderEntityTO>() {
             @Override
             public void onResponse(Call<OrderEntityTO> call, Response<OrderEntityTO> response) {
                 if(response.isSuccessful()){
+
+                    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
                     if(response.body()!= null){
+
                         OrderEntityTO orderEntityTO = response.body();
                         AppDriverAssist.getApplicationPreferences().saveObject(orderEntityTO);
-                        //не уверена, что будет правильно работать
-                        // создаем уведомление
-                        // Create PendingIntent
-                        PollReceiver.cancelAlarms(ctxt);
+                        AppDriverAssist.getAlarmService().cancelAlarms(ctxt,OrderReceiver.class, OrderService.UNIQUE_JOB_ID);
+
+
                         Intent intent = new Intent(ctxt, OrderActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        PendingIntent resultPendingIntent = PendingIntent.getActivity(ctxt, 0, intent ,
+                        PendingIntent resultPendingIntent = PendingIntent.getActivity(ctxt, 1, intent ,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
                         @SuppressWarnings("deprecation") NotificationCompat.Builder builder =
@@ -71,8 +71,6 @@ public class ScheduledService extends JobIntentService {
                         builder.setSound(uri);
                         Notification notification = builder.build();
 
-                        NotificationManager notificationManager =
-                                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                         if (notificationManager != null) {
                             notificationManager.notify(1, notification);
                         }
@@ -84,7 +82,6 @@ public class ScheduledService extends JobIntentService {
 
             @Override
             public void onFailure(Call<OrderEntityTO> call, Throwable t) {
-               // Здесь ничего не делаем t.printStackTrace();
             }
         });
 

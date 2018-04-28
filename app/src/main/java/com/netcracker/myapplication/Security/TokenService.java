@@ -12,9 +12,6 @@ public class TokenService {
     public static final String SESSION = "Session ";
     public static final String APP_PREFERENCES = "AuthData";
 
-    public static final String ID_DRIVER = "IdDriver";
-    public static final String DRIVER_ON_SHIFT = "DriverData";
-
     public static String getToken(String login, String password) {
         String originalInput = login + ":" + password;
         String token =  BASE +  Base64.encodeToString(originalInput.getBytes(), Base64.DEFAULT);

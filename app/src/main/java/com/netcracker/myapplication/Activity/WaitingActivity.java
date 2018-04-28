@@ -1,33 +1,27 @@
 package com.netcracker.myapplication.Activity;
 
 import android.Manifest;
-import android.content.Context;
+import android.app.AlarmManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.netcracker.myapplication.Application.AppDriverAssist;
-import com.netcracker.myapplication.BackgroungJob.PollReceiver;
+import com.netcracker.myapplication.BackgroungJob.OrderJob.OrderService;
+import com.netcracker.myapplication.BackgroungJob.OrderJob.OrderReceiver;
+import com.netcracker.myapplication.Entity.DriverEntity;
 import com.netcracker.myapplication.R;
-import com.netcracker.myapplication.Security.TokenService;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WaitingActivity extends AppCompatActivity {
+public class WaitingActivity extends MainActivity {
    private Button goToWorkButton;
    private Button leaveWorkButton;
    private Button callOperatorButton;
@@ -38,7 +32,7 @@ public class WaitingActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_waiting);
 
-        boolean on_shift = AppDriverAssist.getApplicationPreferences().getSharedPreferences().getBoolean(TokenService.DRIVER_ON_SHIFT, false);
+        boolean on_shift = AppDriverAssist.getApplicationPreferences().getBoolean(DriverEntity.DRIVER_ON_SHIFT);
         goToWorkButton = findViewById(R.id.go_to_work_button);
         leaveWorkButton = findViewById(R.id.leave_work_button);
         callOperatorButton = findViewById(R.id.call_operators_button);
@@ -46,7 +40,12 @@ public class WaitingActivity extends AppCompatActivity {
         if (on_shift) {
             //если пользователь на смене, то необходимо включить фоновое задание
             goToWorkButton.setVisibility(View.GONE);
-               PollReceiver.setAlarm(getApplicationContext());
+            AppDriverAssist.getAlarmService().setAlarm(getApplicationContext(),
+                    OrderReceiver.class,
+                    OrderService.UNIQUE_JOB_ID,
+                    OrderService.INITIAL_DELAY,
+                    OrderService.PERIOD,
+                    AlarmManager.RTC_WAKEUP);
         } else {
             leaveWorkButton.setVisibility(View.GONE);
         }
@@ -68,16 +67,31 @@ public class WaitingActivity extends AppCompatActivity {
             goToWorkButton.setVisibility(View.VISIBLE);
         }
 
-        long idDriver = Long.valueOf(AppDriverAssist.getApplicationPreferences().getSharedPreferences().getString(TokenService.ID_DRIVER, ""));
+        long idDriver = Long.valueOf(AppDriverAssist.getApplicationPreferences().getString(DriverEntity.ID_DRIVER));
         AppDriverAssist.getApi().changeOnShift(idDriver).enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                //статус в поле
+
+                if(response.isSuccessful()){
+                    if(goToWorkButton.getVisibility()==View.GONE){
+
+                        AppDriverAssist.getAlarmService().setAlarm(getApplicationContext(),
+                                OrderReceiver.class,
+                                OrderService.UNIQUE_JOB_ID,
+                                OrderService.INITIAL_DELAY,
+                                OrderService.PERIOD,
+                                AlarmManager.RTC_WAKEUP);
+
+                    }else{
+                        AppDriverAssist.getAlarmService().cancelAlarms(getApplicationContext(),OrderReceiver.class,OrderService.UNIQUE_JOB_ID);
+                    }
+                }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t)
+            {
                 t.printStackTrace();
             }
         });

@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:text="@string/name_for_order" />
 
             <TextView
@@ -46,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:text="@string/first_and_last_name" />
 
             <TextView
@@ -67,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:fontFamily="sans-serif"
                 android:inputType="textPersonName"
                 android:text="@string/adress_of_client" />
 
@@ -111,6 +114,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/show_map_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:onClick="showMapClick"
+                android:text="@string/show_way"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/at_client_button"

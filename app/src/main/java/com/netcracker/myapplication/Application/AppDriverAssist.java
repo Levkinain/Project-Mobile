@@ -1,7 +1,11 @@
 package com.netcracker.myapplication.Application;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.netcracker.myapplication.BackgroungJob.AlarmService;
 import com.netcracker.myapplication.SharedPreferences.ApplicationPreferences;
 import com.netcracker.myapplication.retrofit2.Interfaces.ApiService;
 import com.netcracker.myapplication.retrofit2.Interfaces.MapService;
@@ -14,25 +18,42 @@ public class AppDriverAssist extends Application {
     private static ApiService apiService;
     private static MapService mapService;
     private static ApplicationPreferences appPreferences;
+    private static FusedLocationProviderClient mFusedLocationClient;
+    private static AlarmService alarmService;
 
-    public static final String OPERATOR_PHONE_NAMBER = "+79009269218";
+    public static final String OPERATOR_PHONE_NAMBER = "+79204185103";
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
-        apiService = new RetrofitService(getApplicationContext()).getApiService();
-        mapService = new RetrofitMapService(getApplicationContext()).getMapService();
-        appPreferences = new ApplicationPreferences(getApplicationContext());
+        Context context = getApplicationContext();
+        apiService = new RetrofitService(context).getApiService();
+        mapService = new RetrofitMapService(context).getMapService();
+        appPreferences = new ApplicationPreferences(context);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        alarmService = new AlarmService(context);
     }
 
-    public static ApiService getApi(){
+    public static ApiService getApi() {
         return apiService;
     }
 
-    public static MapService getMapApi(){
+    public static MapService getMapApi() {
         return mapService;
     }
-    public static  ApplicationPreferences getApplicationPreferences(){
+
+    public static ApplicationPreferences getApplicationPreferences() {
         return appPreferences;
     }
+
+    public static FusedLocationProviderClient getFusedLocationProviderClient() {
+        return mFusedLocationClient;
+    }
+
+    public static AlarmService getAlarmService() {
+        return alarmService;
+    }
 }
+
+
+///////////////////Нужно отработать отказ от заказа.

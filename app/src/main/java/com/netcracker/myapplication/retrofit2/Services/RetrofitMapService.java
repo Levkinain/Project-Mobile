@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitMapService {
-    private static final String BASE_URL = "http://10.254.18.248:8082";
+    private static final String BASE_URL = "https://maps.googleapis.com/";
     private Retrofit retrofit;
     private MapService mapService;
 

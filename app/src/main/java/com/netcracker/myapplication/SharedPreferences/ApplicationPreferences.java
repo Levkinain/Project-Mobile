@@ -37,6 +37,26 @@ public class ApplicationPreferences {
         return object;
     }
 
+    public void putString(String key, String value ){
+        mEditor.putString(key,value).commit();
+    }
+
+    public String getString(String key ){
+        return sharedPreferences.getString(key, "");
+    }
+
+    public void putBoolean(String key, boolean value ){
+        mEditor.putBoolean(key, value);
+    }
+
+    public boolean getBoolean(String key){
+       return sharedPreferences.getBoolean(key, false);
+    }
+
+    public void clear(){
+        mEditor.clear().commit();
+    }
+
     public void clear(String nameAttrPref){
         try {
             sharedPreferences.edit().remove(nameAttrPref).commit();

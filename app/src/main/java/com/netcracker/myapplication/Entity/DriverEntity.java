@@ -6,7 +6,13 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Objects;
 
 
-public class DriverEntityTO {
+public class DriverEntity {
+
+    public static final String DRIVER_GEO_LOCATION = "DriverGeoData";
+    public static final String ID_DRIVER = "IdDriver";
+    public static final String DRIVER_ON_SHIFT = "DriverData";
+    public static final String CURRENTLY_TRACKING = "CurrentlyTracking";
+
 
     @SerializedName("id")
     @Expose
@@ -40,10 +46,10 @@ public class DriverEntityTO {
     @Expose
     private long carId;
 
-    public DriverEntityTO() {
+    public DriverEntity() {
     }
 
-    public DriverEntityTO(long id, String name, long typeId, String firstName, String lastName, String phoneNumber, String driverGeoData, long carId) {
+    public DriverEntity(long id, String name, long typeId, String firstName, String lastName, String phoneNumber, String driverGeoData, long carId) {
         this.id = id;
         this.name = name;
         this.typeId = typeId;
@@ -122,7 +128,7 @@ public class DriverEntityTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DriverEntityTO that = (DriverEntityTO) o;
+        DriverEntity that = (DriverEntity) o;
         return getId() == that.getId() &&
                 getTypeId() == that.getTypeId() &&
                 getCarId() == that.getCarId() &&
@@ -141,7 +147,7 @@ public class DriverEntityTO {
 
     @Override
     public String toString() {
-        return DriverEntityTO.class.getSimpleName() +
+        return DriverEntity.class.getSimpleName() +
                 " id=" + id +
                 ", name='" + name + '\'' +
                 ", typeId=" + typeId +

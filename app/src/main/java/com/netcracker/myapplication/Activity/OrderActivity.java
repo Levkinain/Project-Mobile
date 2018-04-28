@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderActivity extends AppCompatActivity {
+public class OrderActivity extends MainActivity {
 
     private TextView nameOrder;
     private TextView firstAnfLastNameClient;
@@ -70,7 +70,19 @@ public class OrderActivity extends AppCompatActivity {
                 atClientButton.setVisibility(View.GONE);
             }
 
+        }else{
+            onStop();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        if(order==null){
+            Intent startWaitingActivity = new Intent(getApplicationContext(),WaitingActivity.class);
+            startWaitingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(startWaitingActivity);
+        }
+        super.onStop();
     }
 
     public void CallOperator(View view) {
@@ -137,5 +149,10 @@ public class OrderActivity extends AppCompatActivity {
             return;
         }
         startActivity(intentCall);
+    }
+
+    public void showMapClick(View view) {
+        Intent showRoute = new Intent(OrderActivity.this,MapsActivity.class);
+        startActivity(showRoute);
     }
 }
