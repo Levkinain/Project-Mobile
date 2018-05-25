@@ -19,6 +19,7 @@ import com.netcracker.myapplication.Entity.MapEntity.Leg;
 import com.netcracker.myapplication.Entity.MapEntity.MapResult;
 import com.netcracker.myapplication.Entity.MapEntity.Route;
 import com.netcracker.myapplication.Entity.MapEntity.StartLocation;
+import com.netcracker.myapplication.Entity.OrderEntityTO;
 import com.netcracker.myapplication.R;
 
 import java.util.List;
@@ -30,11 +31,15 @@ import retrofit2.Response;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private String beginPoint;
+    private String endPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        beginPoint = getIntent().getStringExtra("beginPoint");
+        endPoint = getIntent().getStringExtra("endPoint");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,9 +63,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showPoute() {
+        //OrderEntityTO order = (OrderEntityTO) AppDriverAssist.getApplicationPreferences().getObject(new OrderEntityTO());
+        //String geo = order.getDestinationGeoData();
 
 
-        AppDriverAssist.getMapApi().getRoutes("51.678858,39.159507", "51.676180,39.150355", "ru").enqueue(new Callback<MapResult>() {
+        AppDriverAssist.getMapApi().getRoutes(beginPoint, endPoint, "ru").enqueue(new Callback<MapResult>() {
             @Override
             public void onResponse(Call<MapResult> call, Response<MapResult> response) {
                 MapResult routes = response.body();

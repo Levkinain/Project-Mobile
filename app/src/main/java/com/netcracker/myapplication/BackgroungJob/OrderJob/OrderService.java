@@ -25,13 +25,13 @@ public class OrderService extends JobIntentService {
     public static final int UNIQUE_JOB_ID = 1337;
     public static final int INITIAL_DELAY = 5000; // 5 seconds
     public static final int PERIOD = 60000; // 60 seconds
-    private static Context ctxt;
-    private NotificationManager notificationManager;
+    private static Context contxt;
+    public NotificationManager notificationManager;
 
         static void enqueueWork(Context context) {
-            ctxt = context;
-            enqueueWork(context, OrderService.class, 0,
-                new Intent(context, OrderService.class));
+            contxt = context;
+            enqueueWork(contxt, OrderService.class, 0,
+                new Intent(contxt, OrderService.class));
     }
 
     @Override
@@ -50,16 +50,16 @@ public class OrderService extends JobIntentService {
 
                         OrderEntityTO orderEntityTO = response.body();
                         AppDriverAssist.getApplicationPreferences().saveObject(orderEntityTO);
-                        AppDriverAssist.getAlarmService().cancelAlarms(ctxt,OrderReceiver.class, OrderService.UNIQUE_JOB_ID);
+                        AppDriverAssist.getAlarmService().cancelAlarms(contxt,OrderReceiver.class, OrderService.UNIQUE_JOB_ID);
 
 
-                        Intent intent = new Intent(ctxt, OrderActivity.class);
+                        Intent intent = new Intent(contxt, OrderActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        PendingIntent resultPendingIntent = PendingIntent.getActivity(ctxt, 1, intent ,
+                        PendingIntent resultPendingIntent = PendingIntent.getActivity(contxt, 1, intent ,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
                         @SuppressWarnings("deprecation") NotificationCompat.Builder builder =
-                                new NotificationCompat.Builder(ctxt)
+                                new NotificationCompat.Builder(contxt)
                                         .setSmallIcon(R.mipmap.ic_launcher)
                                         .setContentTitle("Новый заказ")
                                         .setContentText(orderEntityTO.getName())
@@ -80,10 +80,12 @@ public class OrderService extends JobIntentService {
                 }
             }
 
+
             @Override
             public void onFailure(Call<OrderEntityTO> call, Throwable t) {
             }
         });
 
     }
+
 }

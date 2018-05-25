@@ -150,7 +150,7 @@ public class LocationService extends Service implements
             notificationManager.notify(1, notification);
         }
 
-        AppDriverAssist.getApi().chageGeoLocation(Driver, geoData).enqueue(new Callback<ResponseBody>() {
+        AppDriverAssist.getApi().changeGeoLocation(Driver, geoData).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 boolean res = response.isSuccessful();

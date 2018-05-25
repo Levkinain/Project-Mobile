@@ -30,7 +30,7 @@ public interface ApiService {
     @PATCH("orders/pickclient")
     Call<ResponseBody> pickClient(@Body OrderEntityTO order);
 
-    @PATCH("drivers/{id}/chageGeoLocation")
-    Call<ResponseBody> chageGeoLocation(@Path("id") long id, @Body String geoData);
+    @PATCH("drivers/{id}/changeGeoLocation")
+    Call<ResponseBody> changeGeoLocation(@Path("id") long id, @Body String geoData);
 
 }

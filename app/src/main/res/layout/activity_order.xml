@@ -121,8 +121,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
-                android:onClick="showMapClick"
-                android:text="@string/show_way"
+                android:onClick="showWayToClientClick"
+                android:text="@string/show_way_to_client"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/show_map_button2"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:onClick="showWayToDestinationClick"
+                android:text="@string/show_way_to_destination"
                 android:textStyle="bold" />
 
             <Button

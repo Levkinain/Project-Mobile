@@ -10,8 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.netcracker.myapplication.Application.AppDriverAssist;
+import com.netcracker.myapplication.Entity.DriverEntity;
 import com.netcracker.myapplication.Entity.OrderEntityTO;
 import com.netcracker.myapplication.R;
 
@@ -134,6 +136,8 @@ public class OrderActivity extends MainActivity {
                 t.printStackTrace();
             }
         });
+
+        AppDriverAssist.getApplicationPreferences().clear(order.getClass().getCanonicalName());
     }
 
     public void doCall(String phoneNumber) {
@@ -151,8 +155,26 @@ public class OrderActivity extends MainActivity {
         startActivity(intentCall);
     }
 
-    public void showMapClick(View view) {
+    public void showWayToClientClick(View view) {
         Intent showRoute = new Intent(OrderActivity.this,MapsActivity.class);
+        String geoData = AppDriverAssist.getApplicationPreferences().getString(DriverEntity.DRIVER_GEO_LOCATION);
+        if(geoData.isEmpty()){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Невозможно определить текущее местоположение!", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        showRoute.putExtra("beginPoint",geoData);
+        showRoute.putExtra("endPoint",order.getGeoData());
+        startActivity(showRoute);
+
+    }
+
+    public void showWayToDestinationClick(View view) {
+        Intent showRoute = new Intent(OrderActivity.this,MapsActivity.class);
+        showRoute.putExtra("beginPoint",order.getGeoData());
+        showRoute.putExtra("endPoint",order.getDestinationGeoData());
         startActivity(showRoute);
     }
+
 }

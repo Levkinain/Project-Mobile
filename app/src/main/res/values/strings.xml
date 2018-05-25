@@ -23,6 +23,7 @@
     <string name="complete_order_buttton">Завершить заказ</string>
     <string name="title_activity_maps">Маршрут</string>
     <string name="title_new_order">Новый заказ</string>
-    <string name="show_way">Показать маршрут</string>
+    <string name="show_way_to_client">Маршрут до клиента</string>
+    <string name="show_way_to_destination">Маршрут до места назначения</string>
     <string name="google_play_services_unavailable">google play services не доступны</string>
 </resources>

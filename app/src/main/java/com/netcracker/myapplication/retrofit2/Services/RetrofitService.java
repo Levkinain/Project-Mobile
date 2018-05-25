@@ -12,14 +12,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitService {
 
-   // private static final String BASE_URL = "http://192.168.43.116:8082";
-    private static final String BASE_URL = "http://192.168.43.87:8082";
-    // private static final String BASE_URL = "http://10.100.36.74:8082";
-      // private static final String BASE_URL = "http://10.254.18.248:8082";
-    //10.254.18.248
-    //вый фай дома
-    //private static final String BASE_URL = "http://192.168.88.235:8082/";
-   // private static final String BASE_URL = "http://192.168.0.106:8082/";
+   private static final String BASE_URL = "http://185.246.65.240:8080/app/";
+    //private static final String BASE_URL = "http://192.168.43.87:8082/";
+   // private static final String BASE_URL = "http://10.100.36.70:8082/";
 
     private Retrofit retrofit;
     private ApiService apiService;

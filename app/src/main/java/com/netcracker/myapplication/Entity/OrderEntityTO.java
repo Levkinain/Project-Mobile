@@ -70,6 +70,17 @@ public class OrderEntityTO {
     @Expose
     private String statusOrder;
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    @SerializedName("creator")
+    @Expose
+    private String creator;
 
     public long getId() {
         return id;
@@ -186,7 +197,7 @@ public class OrderEntityTO {
     public OrderEntityTO() {
     }
 
-    public OrderEntityTO(long id, String name, long typeId, String clientFirstName, String clientLastName, String clientPhoneNumber, String address, long driverId, String orderCost, String geoData, String destinationGeoData, String orderStartTime, String orderEndTime, String statusOrder) {
+    public OrderEntityTO(long id, String name, long typeId, String clientFirstName, String clientLastName, String clientPhoneNumber, String address, long driverId, String orderCost, String geoData, String destinationGeoData, String orderStartTime, String orderEndTime, String statusOrder, String creator) {
         this.id = id;
         this.name = name;
         this.typeId = typeId;
@@ -201,6 +212,7 @@ public class OrderEntityTO {
         this.orderStartTime = orderStartTime;
         this.orderEndTime = orderEndTime;
         this.statusOrder = statusOrder;
+        this.creator = creator;
     }
 
     @Override
@@ -248,5 +260,6 @@ public class OrderEntityTO {
                 ", statusOrder='" + statusOrder + '\'' +
                 '}';
     }
+
 
 }
